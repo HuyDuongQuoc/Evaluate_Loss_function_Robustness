@@ -1,0 +1,28 @@
+experiment:
+  task: classification
+  seeds: [42, 123, 2026]
+
+dataset:
+  n_samples: 5000
+  n_features: 20
+  n_informative: 15
+  n_redundant: 5
+  n_classes: 3
+  class_sep: 1.0
+
+split:
+  train_size: 0.70
+  val_size: 0.15
+  test_size: 0.15
+
+preprocessing:
+  standardize_features: true
+
+noise:
+  type: symmetric
+  levels: [0.0, 0.2, 0.4]
+
+evaluation:
+  metrics:
+    - accuracy
+    - macro_f1
