@@ -1,0 +1,21 @@
+# Virtual environment
+.venv/
+
+# Python
+__pycache__/
+*.py[cod]
+
+# Jupyter
+.ipynb_checkpoints/
+
+# VS Code
+.vscode/
+
+# Experiment outputs
+results/logs/*
+results/checkpoints/*
+
+# OS
+.DS_Store
+Thumbs.db
+docs/
