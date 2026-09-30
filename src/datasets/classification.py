@@ -24,7 +24,7 @@ def create_classification_dataset(
             "train_size + val_size + test_size must equal 1."
         )
 
-    # 1. Generate balanced clean classification data.
+    # 1. Generate balanced clean classification data
     X, y = make_classification(
         n_samples=n_samples,
         n_features=n_features,
@@ -40,7 +40,7 @@ def create_classification_dataset(
     X = X.astype(np.float32)
     y = y.astype(np.int64)
 
-    # 2. Split test set.
+    # 2. Split test set
     X_train_val, X_test, y_train_val, y_test = train_test_split(
         X,
         y,
@@ -51,7 +51,7 @@ def create_classification_dataset(
 
     relative_val_size = val_size / (train_size + val_size)
 
-    # 3. Train / validation split.
+    # 3. Train / validation split
     X_train, X_val, y_train, y_val = train_test_split(
         X_train_val,
         y_train_val,
@@ -60,7 +60,7 @@ def create_classification_dataset(
         stratify=y_train_val,
     )
 
-    # 4. Fit scaler ONLY on training features.
+    # 4. Fit scaler ONLY on training features
     scaler = StandardScaler()
 
     X_train = scaler.fit_transform(X_train)
