@@ -73,8 +73,13 @@ class SymmetricCrossEntropyLoss(nn.Module):
         
         one_hot.clamp(min=self.eps, max=1.0)
         
+        one_hot_safe = one_hot.clamp(
+            min=self.eps,
+            max=1.0,
+        )
+        
         rce = -torch.sum(
-            probabilities*torch.log(one_hot),
+            probabilities*torch.log(one_hot_safe),
             dim=1, 
         )
         

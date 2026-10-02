@@ -15,7 +15,7 @@ def train_one_epoch(
     model.train()
     
     total_loss = 0.0
-    total_sample = 0
+    total_samples = 0
 
     for X_batch, y_batch in dataloader:
         X_batch = X_batch.to(device)
@@ -31,16 +31,16 @@ def train_one_epoch(
             raise RuntimeError(f"Non-finite training loss detected: {loss.item()}")
         
         loss.backward()
-        
+            
         optimizer.step()
-        
+            
         batch_size = X_batch.size(0)
-        
+            
         total_loss += loss.item()*batch_size
         
         total_samples += batch_size
         
-    avg_loss = total_loss/total_sample
+    avg_loss = total_loss/total_samples
     
     return avg_loss    
 
@@ -102,14 +102,14 @@ def fit(
                 dataloader = train_loader,
                 criterion=criterion,
                 optimizer=optimizer,
-                devic=device,
+                device=device,
             )
         
         val_loss = evaluate_loss(
                 model=model,
                 dataloader = val_loader,
                 criterion=criterion,
-                devic=device,
+                device=device,
             )
         
         history["train_loss"].append(train_loss)
