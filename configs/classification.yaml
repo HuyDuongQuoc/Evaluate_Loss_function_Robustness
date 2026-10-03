@@ -1,6 +1,15 @@
 experiment:
   task: classification
-  seeds: [42, 123, 2026]
+
+  seeds:
+    - 42
+    - 123
+    - 2026
+
+  losses:
+    - ce
+    - gce
+    - sce
 
 dataset:
   n_samples: 5000
@@ -15,31 +24,32 @@ split:
   val_size: 0.15
   test_size: 0.15
 
-preprocessing:
-  standardize_features: true
-
-noise:
-  type: symmetric
-  levels: [0.0, 0.2, 0.4]
-
-evaluation:
-  metrics:
-    - accuracy
-    - macro_f1
-
 model:
   input_dim: 20
-  hidden_dims: [64,32] #20->64->32
-  output_dim: 3
-  activation: relu     
+  hidden_dims:
+    - 64
+    - 32
+
+noise:
+  levels:
+    - 0.0
+    - 0.2
+    - 0.4
+
+loss:
+  gce_q: 0.7
+  sce_alpha: 0.1
+  sce_beta: 1.0
 
 training:
   batch_size: 64
   epochs: 100
-
   optimizer: adam
   learning_rate: 0.001
   weight_decay: 0.0
-
   num_workers: 0
   device: auto
+
+output:
+  root_dir: results
+  save_checkpoint: true

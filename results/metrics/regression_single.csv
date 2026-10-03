@@ -1,0 +1,4 @@
+run_id,task,seed,noise_level,actual_noise_ratio,loss,val_mae,val_rmse
+regression_seed42_noise10_mse,regression,42,0.1,0.1,mse,12.400519371032715,16.041218118052555
+regression_seed42_noise10_mae,regression,42,0.1,0.1,mae,1.4159578084945679,1.9784570593041069
+regression_seed42_noise10_huber,regression,42,0.1,0.1,huber,1.3422592878341675,1.8891219793126561

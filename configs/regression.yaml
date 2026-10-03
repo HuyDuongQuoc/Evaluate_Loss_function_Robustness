@@ -1,6 +1,14 @@
 experiment:
   task: regression
-  seeds: [42, 123, 2026]
+  seeds:
+    - 42
+    - 123
+    - 2026
+
+  losses:
+    - mse
+    - mae
+    - huber
 
 dataset:
   n_samples: 5000
@@ -13,31 +21,32 @@ split:
   val_size: 0.15
   test_size: 0.15
 
-preprocessing:
-  standardize_features: true
-
-noise:
-  levels: [0.0, 0.1, 0.2]
-  scale: 1.0
-
-evaluation:
-  metrics:
-    - mae
-    - rmse
-
 model:
   input_dim: 20
-  hidden_dims: [64,32] #20->64->32
-  output_dim: 1
-  activation: relu 
+  hidden_dims:
+    - 64
+    - 32
+
+noise:
+  levels:
+    - 0.0
+    - 0.1
+    - 0.2
+
+  scale: 1.0
+
+loss:
+  huber_delta: 1.0
 
 training:
   batch_size: 64
   epochs: 100
-
   optimizer: adam
   learning_rate: 0.001
   weight_decay: 0.0
-
   num_workers: 0
   device: auto
+
+output:
+  root_dir: results
+  save_checkpoint: true
