@@ -36,7 +36,7 @@ noise:
   scale: 1.0
 
 loss:
-  huber_delta: 1.0
+  huber_delta_factor: 0.1
 
 training:
   batch_size: 64

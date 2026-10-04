@@ -38,8 +38,8 @@ noise:
 
 loss:
   gce_q: 0.7
-  sce_alpha: 0.1
-  sce_beta: 1.0
+  sce_alpha: 0.01
+  sce_beta: 0.1
 
 training:
   batch_size: 64

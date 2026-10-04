@@ -194,9 +194,14 @@ def run_regression_group(
 
         model.load_state_dict(initial_state)
 
+        huber_delta = (
+            loss_config["huber_delta_factor"]
+            * float(np.std(data["y_train"]))
+        )
+
         criterion = get_regression_loss(
             loss_name,
-            huber_delta=loss_config["huber_delta"],
+            huber_delta=huber_delta,
         )
 
         optimizer = create_optimizer(
