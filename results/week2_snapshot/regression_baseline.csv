@@ -1,0 +1,10 @@
+run_id,task,seed,noise_level,actual_noise_ratio,loss,val_mae,val_rmse
+regression_seed42_noise00_mse,regression,42,0.0,0.0,mse,1.620495080947876,2.165173847715818
+regression_seed42_noise00_mae,regression,42,0.0,0.0,mae,1.0483156442642212,1.493889043234297
+regression_seed42_noise00_huber,regression,42,0.0,0.0,huber,0.8928211331367493,1.3349125371278097
+regression_seed123_noise00_mse,regression,123,0.0,0.0,mse,1.8917396068572998,2.5388252969128517
+regression_seed123_noise00_mae,regression,123,0.0,0.0,mae,1.2018738985061646,1.7768666056603442
+regression_seed123_noise00_huber,regression,123,0.0,0.0,huber,1.2136377096176147,1.7226236560878019
+regression_seed2026_noise00_mse,regression,2026,0.0,0.0,mse,1.7791072130203247,2.291561286121704
+regression_seed2026_noise00_mae,regression,2026,0.0,0.0,mae,1.1659573316574097,1.5445453556325497
+regression_seed2026_noise00_huber,regression,2026,0.0,0.0,huber,1.0228512287139893,1.4052319126210435

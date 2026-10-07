@@ -40,12 +40,23 @@ loss:
 
 training:
   batch_size: 64
-  epochs: 100
+
+  max_epochs: 300
+
   optimizer: adam
   learning_rate: 0.001
   weight_decay: 0.0
+
   num_workers: 0
   device: auto
+
+  early_stopping:
+    enabled: true
+    monitor: val_mae
+    mode: min
+    patience: 20
+    min_delta: 0.01
+    restore_best_weights: true
 
 output:
   root_dir: results

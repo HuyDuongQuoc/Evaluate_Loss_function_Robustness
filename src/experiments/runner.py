@@ -209,14 +209,22 @@ def run_regression_group(
             training_config=training_config,
         )
 
-        history = fit(
+        early_config = training_config["early_stopping"]
+
+        history, training_info = fit(
             model=model,
             train_loader=train_loader,
             val_loader=val_loader,
             criterion=criterion,
             optimizer=optimizer,
             device=device,
-            epochs=training_config["epochs"],
+            max_epochs=training_config["max_epochs"],
+            validation_metric_fn=regression_monitor,
+            monitor_name="val_mae",
+            monitor_mode=early_config["mode"],
+            patience=early_config["patience"],
+            min_delta=early_config["min_delta"],
+            restore_best_weights=early_config["restore_best_weights"],
             verbose=verbose,
         )
 
@@ -260,6 +268,7 @@ def run_regression_group(
             "validation": val_metrics,
             "test": test_metrics,
             "history": history,
+            "training_info": training_info,
             "config": config,
         }
 
@@ -276,10 +285,8 @@ def run_regression_group(
                 metadata={
                     "run_id": run_id,
                     "seed": seed,
-                    "noise_level":
-                        noise_level,
-                    "loss":
-                        loss_name,
+                    "noise_level": noise_level,
+                    "loss": loss_name,
                 },
                 path=(
                     root_dir
@@ -292,15 +299,14 @@ def run_regression_group(
             "run_id": run_id,
             "task": "regression",
             "seed": seed,
-            "noise_level":
-                noise_level,
-            "actual_noise_ratio":
-                actual_noise_ratio,
+            "noise_level": noise_level,
+            "actual_noise_ratio": actual_noise_ratio,
             "loss": loss_name,
-            "val_mae":
-                val_metrics["mae"],
-            "val_rmse":
-                val_metrics["rmse"],
+            "val_mae": val_metrics["mae"],
+            "val_rmse": val_metrics["rmse"],
+            "best_epoch":training_info["best_epoch"],
+            "stopped_epoch": training_info["stopped_epoch"],
+            "epochs_trained": training_info["epochs_trained"],
         }
 
         if test_metrics is not None:
@@ -450,14 +456,22 @@ def run_classification_group(
             training_config=training_config,
         )
 
-        history = fit(
+        early_config = training_config["early_stopping"]
+
+        history, training_info = fit(
             model=model,
             train_loader=train_loader,
             val_loader=val_loader,
             criterion=criterion,
             optimizer=optimizer,
             device=device,
-            epochs=training_config["epochs"],
+            max_epochs=training_config["max_epochs"],
+            validation_metric_fn=classification_monitor,
+            monitor_name="val_macro_f1",
+            monitor_mode=early_config["mode"],
+            patience=early_config["patience"],
+            min_delta=early_config["min_delta"],
+            restore_best_weights=early_config["restore_best_weights"],
             verbose=verbose,
         )
 
@@ -504,6 +518,7 @@ def run_classification_group(
             "test": test_metrics,
             "history": history,
             "config": config,
+            "training_info": training_info,
         }
 
         save_json(
@@ -538,6 +553,9 @@ def run_classification_group(
             "loss": loss_name,
             "val_accuracy": val_metrics["accuracy"],
             "val_macro_f1": val_metrics["macro_f1"],
+            "best_epoch":training_info["best_epoch"],
+            "stopped_epoch": training_info["stopped_epoch"],
+            "epochs_trained": training_info["epochs_trained"],
         }
 
         if test_metrics is not None:
@@ -557,3 +575,31 @@ def run_classification_group(
         results.append(row)
 
     return results
+
+def regression_monitor(
+    model,
+    dataloader,
+    device,
+):
+
+    metrics = evaluate_regression(
+        model=model,
+        dataloader=dataloader,
+        device=device,
+    )
+
+    return metrics["mae"]
+
+def classification_monitor(
+    model,
+    dataloader,
+    device,
+):
+
+    metrics = evaluate_classification(
+        model=model,
+        dataloader=dataloader,
+        device=device,
+    )
+
+    return metrics["macro_f1"]
