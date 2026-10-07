@@ -1,4 +1,4 @@
-run_id,task,seed,noise_level,actual_noise_ratio,loss,val_mae,val_rmse
-regression_seed42_noise10_mse,regression,42,0.1,0.1,mse,12.400519371032715,16.041218118052555
-regression_seed42_noise10_mae,regression,42,0.1,0.1,mae,1.4159578084945679,1.9784570593041069
-regression_seed42_noise10_huber,regression,42,0.1,0.1,huber,3.3914592266082764,4.495514647626174
+run_id,task,seed,noise_level,actual_noise_ratio,loss,val_mae,val_rmse,best_epoch,stopped_epoch,epochs_trained
+regression_seed42_noise00_mse,regression,42,0.0,0.0,mse,0.461710125207901,0.7312527697258034,259,279,279
+regression_seed42_noise00_mae,regression,42,0.0,0.0,mae,0.6099275946617126,0.9488442392500316,223,243,243
+regression_seed42_noise00_huber,regression,42,0.0,0.0,huber,0.6152332425117493,0.9799103381537607,188,208,208

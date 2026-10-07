@@ -37,8 +37,8 @@ noise:
     - 0.4
 
 loss:
-  gce_q: 0.7
-  sce_alpha: 0.01
+  gce_q: 0.5
+  sce_alpha: 0.1
   sce_beta: 0.1
 
 training:

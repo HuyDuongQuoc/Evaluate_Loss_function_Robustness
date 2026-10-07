@@ -20,6 +20,8 @@ from src.training.evaluator import evaluate_classification
 
 from src.experiments.io import load_yaml
 
+from src.experiments.runner import classification_monitor
+
 from src.utils import (
     set_seed,
     get_device,
@@ -104,14 +106,22 @@ def train_candidate(
         weight_decay=training_config["weight_decay"],
     )
 
-    fit(
+    early_config = training_config["early_stopping"]
+
+    history, training_info = fit(
         model=model,
         train_loader=train_loader,
         val_loader=val_loader,
         criterion=criterion,
         optimizer=optimizer,
         device=device,
-        epochs=training_config["epochs"],
+        max_epochs=training_config[ "max_epochs"],
+        validation_metric_fn=classification_monitor,
+        monitor_name="val_macro_f1",
+        monitor_mode=early_config["mode"],
+        patience=early_config["patience"],
+        min_delta=early_config["min_delta"],
+        restore_best_weights=early_config["restore_best_weights"],
         verbose=False,
     )
 
@@ -121,7 +131,10 @@ def train_candidate(
         device=device,
     )
 
-    return metrics
+    return (
+        metrics,
+        training_info,
+    )
 
 def main():
 
@@ -225,21 +238,23 @@ def main():
                 )
             )
 
-            metrics = train_candidate(
-                data=data,
-                y_train_noisy=y_train_noisy,
-                initial_state=initial_state,
-                config=config,
-                seed=seed,
-                criterion=criterion,
-                device=device,
+            metrics, training_info = (
+                train_candidate(
+                    data=data,
+                    y_train_noisy=y_train_noisy,
+                    initial_state=initial_state,
+                    config=config,
+                    seed=seed,
+                    criterion=criterion,
+                    device=device,
+                )
             )
 
             results.append(
                 {
                     "loss": "gce",
                     "seed": seed,
-                    "noise_level": TUNING_NOISE,
+                    "noise_level":TUNING_NOISE,
                     "q": q,
                     "alpha": None,
                     "beta": None,
@@ -247,6 +262,12 @@ def main():
                         metrics["accuracy"],
                     "val_macro_f1":
                         metrics["macro_f1"],
+                    "best_epoch":
+                        training_info["best_epoch"],
+                    "stopped_epoch":
+                        training_info["stopped_epoch"],
+                    "epochs_trained":
+                        training_info["epochs_trained"],
                 }
             )
 
@@ -270,21 +291,23 @@ def main():
                 )
             )
 
-            metrics = train_candidate(
-                data=data,
-                y_train_noisy= y_train_noisy,
-                initial_state= initial_state,
-                config=config,
-                seed=seed,
-                criterion=criterion,
-                device=device,
+            metrics, training_info = (
+                train_candidate(
+                    data=data,
+                    y_train_noisy=y_train_noisy,
+                    initial_state=initial_state,
+                    config=config,
+                    seed=seed,
+                    criterion=criterion,
+                    device=device,
+                )
             )
 
             results.append(
                 {
                     "loss": "sce",
                     "seed": seed,
-                    "noise_level": TUNING_NOISE,
+                    "noise_level":TUNING_NOISE,
                     "q": None,
                     "alpha": alpha,
                     "beta": beta,
@@ -292,6 +315,12 @@ def main():
                         metrics["accuracy"],
                     "val_macro_f1":
                         metrics["macro_f1"],
+                    "best_epoch":
+                        training_info["best_epoch"],
+                    "stopped_epoch":
+                        training_info["stopped_epoch"],
+                    "epochs_trained":
+                        training_info["epochs_trained"],
                 }
             )
 

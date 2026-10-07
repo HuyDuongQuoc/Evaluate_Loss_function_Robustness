@@ -20,6 +20,8 @@ from src.training.evaluator import evaluate_regression
 
 from src.experiments.io import load_yaml
 
+from src.experiments.runner import regression_monitor
+
 from src.utils import (
     set_seed,
     get_device,
@@ -172,14 +174,22 @@ def main():
                 weight_decay=training_config["weight_decay"],
             )
 
-            fit(
+            early_config = training_config["early_stopping"]
+
+            history, training_info = fit(
                 model=model,
                 train_loader=train_loader,
                 val_loader=val_loader,
                 criterion=criterion,
                 optimizer=optimizer,
                 device=device,
-                epochs=training_config["epochs"],
+                max_epochs=training_config["max_epochs"],
+                validation_metric_fn=regression_monitor,
+                monitor_name="val_mae",
+                monitor_mode=early_config["mode"],
+                patience=early_config["patience"],
+                min_delta=early_config["min_delta"],
+                restore_best_weights=early_config["restore_best_weights"],
                 verbose=False,
             )
 
@@ -192,11 +202,14 @@ def main():
             results.append(
                 {
                     "seed": seed,
-                    "noise_level":TUNING_NOISE,
+                    "noise_level": TUNING_NOISE,
                     "delta_factor": delta_factor,
                     "delta": delta,
                     "val_mae": metrics["mae"],
                     "val_rmse": metrics["rmse"],
+                    "best_epoch": training_info["best_epoch"],
+                    "stopped_epoch": training_info["stopped_epoch"],
+                    "epochs_trained": training_info["epochs_trained"],
                 }
             )
 

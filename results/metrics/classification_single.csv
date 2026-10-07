@@ -1,4 +1,4 @@
-run_id,task,seed,noise_level,actual_noise_ratio,loss,val_accuracy,val_macro_f1
-classification_seed42_noise20_ce,classification,42,0.2,0.2,ce,0.82,0.8201040951140911
-classification_seed42_noise20_gce,classification,42,0.2,0.2,gce,0.8866666666666667,0.8867512130409018
-classification_seed42_noise20_sce,classification,42,0.2,0.2,sce,0.8813333333333333,0.8812967029059053
+run_id,task,seed,noise_level,actual_noise_ratio,loss,val_accuracy,val_macro_f1,best_epoch,stopped_epoch,epochs_trained
+classification_seed42_noise00_ce,classification,42,0.0,0.0,ce,0.924,0.9241337405047508,18,38,38
+classification_seed42_noise00_gce,classification,42,0.0,0.0,gce,0.9213333333333333,0.9213570019440995,22,42,42
+classification_seed42_noise00_sce,classification,42,0.0,0.0,sce,0.9293333333333333,0.9293788795626479,45,65,65
