@@ -124,7 +124,7 @@ Hai lệnh trên lần lượt chạy:
 - 27 regression runs: 3 loss × 3 noise levels × 3 seed.
 - 27 classification runs: 3 loss × 3 noise levels × 3 seed.
 
-> **Lưu ý:** tên artefact được xác định bởi `task + loss + noise level + seed`. Chạy lại cùng tổ hợp sẽ ghi lại log, checkpoint, noise archive hoặc CSV có cùng tên. Nếu cần giữ một lần chạy cũ, hãy sao lưu thư mục `results/` trước khi chạy lại.
+> **Lưu ý:** tên output được xác định bởi `task + loss + noise level + seed`. Chạy lại cùng tổ hợp sẽ ghi lại log, checkpoint, noise archive hoặc CSV có cùng tên. Nếu cần giữ một lần chạy cũ, hãy sao lưu thư mục `results/` trước khi chạy lại.
 
 ### 4. Tổng hợp metrics và tính robustness
 
